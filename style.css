@@ -1,0 +1,102 @@
+body {
+  background: #1e1e1e;
+  color: white;
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.panel {
+  background: #2c2c2c;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.full {
+  margin-top: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: #3b3b3b;
+}
+
+td,
+th {
+  border: 1px solid #555;
+  padding: 6px;
+  text-align: center;
+}
+
+td[contenteditable="true"] {
+  background: #252525;
+}
+
+.controls {
+  text-align: center;
+  margin-top: 20px;
+}
+
+button {
+  background: #444;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  margin: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+button:hover {
+  background: #666;
+}
+
+.acc {
+  background: #5b1d1d;
+}
+
+.cpu-box {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 18px;
+}
+
+.tape-table td {
+  min-width: 40px;
+  height: 35px;
+}
+
+.output-tape {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.output-cell {
+  background: #444;
+  padding: 10px;
+  border-radius: 5px;
+  min-width: 40px;
+  text-align: center;
+}
+
+.active-line {
+  background: #264d73 !important;
+}
