@@ -511,3 +511,63 @@ window.updateLabel = updateLabel;
 window.removeProgramLine = removeProgramLine;
 
 window.onload = init;
+
+let inputCount = 10;
+let outputCount = 10;
+
+function renderInputTape() {
+  const indexes = document.getElementById("inputIndexes");
+  const fields = document.getElementById("inputFields");
+
+  indexes.innerHTML = "";
+  fields.innerHTML = "";
+
+  for (let i = 0; i < inputCount; i++) {
+    indexes.innerHTML += `<span>${i}</span>`;
+    fields.innerHTML += `
+      <input type="number" id="in${i}" value="0">
+    `;
+  }
+}
+
+function renderOutputTape() {
+  const indexes = document.getElementById("outputIndexes");
+  const fields = document.getElementById("outputFields");
+
+  indexes.innerHTML = "";
+  fields.innerHTML = "";
+
+  for (let i = 0; i < outputCount; i++) {
+    indexes.innerHTML += `<span>${i}</span>`;
+    fields.innerHTML += `
+      <input type="number" id="out${i}" readonly>
+    `;
+  }
+}
+
+function addInput() {
+  inputCount++;
+  renderInputTape();
+}
+
+function removeInput() {
+  if (inputCount > 10) {
+    inputCount--;
+    renderInputTape();
+  }
+}
+
+function addOutput() {
+  outputCount++;
+  renderOutputTape();
+}
+
+function removeOutput() {
+  if (outputCount > 10) {
+    outputCount--;
+    renderOutputTape();
+  }
+}
+
+renderInputTape();
+renderOutputTape();
