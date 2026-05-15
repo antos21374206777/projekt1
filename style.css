@@ -228,3 +228,23 @@ button:hover {
 .active-line {
   background-color: #cfe8ff !important;
 }
+.tasma-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.tasma-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 2px;
+}
+
+.tasma-controls button {
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 0;
+}
