@@ -31,13 +31,6 @@ const program = [
   { label: '', instruction: 'READ', argument: '2' },
   { label: '', instruction: 'LOAD', argument: '1' },
   { label: '', instruction: 'SUB', argument: '2' },
-  { label: '', instruction: 'JGTZ', argument: 'GREATER' },
-  { label: '', instruction: 'LOAD', argument: '=0' },
-  { label: '', instruction: 'WRITE', argument: '0' },
-  { label: '', instruction: 'HALT', argument: '' },
-  { label: 'GREATER', instruction: 'LOAD', argument: '=1' },
-  { label: '', instruction: 'WRITE', argument: '0' },
-  { label: '', instruction: 'HALT', argument: '' }
 ];
 
 const labelMap = {};
