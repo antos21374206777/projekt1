@@ -244,7 +244,7 @@ function getMemory(address) {
   if (memory[address] === undefined) {
     throw new Error(`Pamięć ${address} jest niezdefiniowana`);
   }
-
+}
 
 function getMemory(address) {
   if (memory[address] === undefined) {
