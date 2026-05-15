@@ -86,11 +86,7 @@ function createProgramTable() {
       <td>${index}</td>
 
       <td>
-        <input
-          type="text"
-          value="${line.label}"
-          onchange="updateLabel(${index}, this.value)"
-        >
+        <input type="text" value="${line.label}" onchange="updateLabel(${index}, this.value)">
       </td>
 
       <td>
@@ -100,18 +96,11 @@ function createProgramTable() {
       </td>
 
       <td>
-        <input
-          type="text"
-          value="${line.argument}"
-          placeholder="np. 1, ^1, =5, LABEL"
-          onchange="updateArgument(${index}, this.value)"
-        >
+        <input type="text" value="${line.argument}" onchange="updateArgument(${index}, this.value)">
       </td>
 
       <td>
-        <button onclick="removeProgramLine(${index})">
-          Usuń
-        </button>
+        <button onclick="removeProgramLine(${index})">Usuń</button>
       </td>
     `;
 
@@ -128,9 +117,7 @@ function addEmptyLine() {
 
   tr.innerHTML = `
     <td colspan="4">
-      <button onclick="addProgramLine()">
-        + Dodaj instrukcję
-      </button>
+      <button onclick="addProgramLine()">+ Dodaj instrukcję</button>
     </td>
   `;
 
@@ -141,7 +128,7 @@ function addProgramLine() {
   program.push({
     label: '',
     instruction: 'LOAD',
-    argument: '0'
+    argument: '=0'
   });
 
   buildLabelMap();
@@ -244,12 +231,6 @@ function getMemory(address) {
   if (memory[address] === undefined) {
     throw new Error(`Pamięć ${address} jest niezdefiniowana`);
   }
-}
-
-function getMemory(address) {
-  if (memory[address] === undefined) {
-    throw new Error(`Pamięć ${address} jest niezdefiniowana`);
-  }
 
   return memory[address];
 }
@@ -257,27 +238,23 @@ function getMemory(address) {
 function setMemory(address, value) {
   memory[address] = value;
   updateMemoryCell(address);
+  animateMemory(address); // ANIMACJA
 }
 
 function resolveValue(argument) {
   argument = argument.trim();
 
-  // =x
   if (argument.startsWith('=')) {
     return parseInt(argument.substring(1));
   }
 
-  // ^x
   if (argument.startsWith('^')) {
     const addr = parseInt(argument.substring(1));
     const indirect = getMemory(addr);
-
     return getMemory(indirect);
   }
 
-  // x
-  const addr = parseInt(argument);
-  return getMemory(addr);
+  return getMemory(parseInt(argument));
 }
 
 function resolveAddress(argument) {
@@ -290,196 +267,3 @@ function resolveAddress(argument) {
 
   return parseInt(argument);
 }
-
-function highlightLine(index) {
-  document.querySelectorAll('#programBody tr').forEach(row => {
-    row.classList.remove('active-line');
-  });
-
-  const row = document.getElementById(`line-${index}`);
-
-  if (row) {
-    row.classList.add('active-line');
-  }
-}
-
-function executeInstruction(line) {
-  const instr = line.instruction.toUpperCase().trim();
-  const arg = line.argument.trim();
-
-  document.getElementById('instr').textContent = instr;
-  document.getElementById('arg').textContent = arg || '-';
-
-  switch (instr) {
-    case 'LOAD': {
-      const value = resolveValue(arg);
-      setMemory(0, value);
-      pc++;
-      break;
-    }
-
-    case 'STORE': {
-      const addr = resolveAddress(arg);
-      setMemory(addr, getMemory(0));
-      pc++;
-      break;
-    }
-
-    case 'ADD': {
-      const value = resolveValue(arg);
-      setMemory(0, getMemory(0) + value);
-      pc++;
-      break;
-    }
-
-    case 'SUB': {
-      const value = resolveValue(arg);
-      setMemory(0, getMemory(0) - value);
-      pc++;
-      break;
-    }
-
-    case 'MULT': {
-      const value = resolveValue(arg);
-      setMemory(0, getMemory(0) * value);
-      pc++;
-      break;
-    }
-
-    case 'DIV': {
-      const value = resolveValue(arg);
-
-      if (value === 0) {
-        throw new Error('Dzielenie przez zero');
-      }
-
-      setMemory(0, Math.floor(getMemory(0) / value));
-      pc++;
-      break;
-    }
-
-    case 'READ': {
-      if (inputHead >= inputTape.length) {
-        throw new Error('Koniec taśmy wejściowej');
-      }
-
-      const addr = resolveAddress(arg);
-      setMemory(addr, inputTape[inputHead]);
-
-      inputHead++;
-      pc++;
-      break;
-    }
-
-    case 'WRITE': {
-      const value = resolveValue(arg);
-
-      outputTape.push(value);
-
-      if (outputHead < OUTPUT_SIZE) {
-        document.getElementById(`out${outputHead}`).value = value;
-      }
-
-      outputHead++;
-      pc++;
-      break;
-    }
-
-    case 'JUMP': {
-      jumpToLabel(arg);
-      break;
-    }
-
-    case 'JGTZ': {
-      if (getMemory(0) > 0) {
-        jumpToLabel(arg);
-      } else {
-        pc++;
-      }
-
-      break;
-    }
-
-    case 'JZERO': {
-      if (getMemory(0) === 0) {
-        jumpToLabel(arg);
-      } else {
-        pc++;
-      }
-
-      break;
-    }
-
-    case 'HALT': {
-      running = false;
-      pc = program.length;
-      break;
-    }
-
-    default:
-      throw new Error(`Nieznana instrukcja: ${instr}`);
-  }
-}
-
-function jumpToLabel(label) {
-  if (labelMap[label] === undefined) {
-    throw new Error(`Nie znaleziono etykiety: ${label}`);
-  }
-
-  pc = labelMap[label];
-}
-
-function step() {
-  if (pc >= program.length) {
-    running = false;
-    return false;
-  }
-
-  const line = program[pc];
-
-  highlightLine(pc);
-
-  executeInstruction(line);
-
-  return true;
-}
-
-function stepButton() {
-  try {
-    step();
-  } catch (error) {
-    running = false;
-    alert(error.message);
-  }
-}
-
-async function run() {
-  running = true;
-
-  try {
-    while (running && pc < program.length) {
-      step();
-
-      await sleep(400);
-    }
-  } catch (error) {
-    running = false;
-    alert(error.message);
-  }
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-window.run = run;
-window.stepButton = stepButton;
-window.reset = reset;
-
-window.addProgramLine = addProgramLine;
-window.updateInstruction = updateInstruction;
-window.updateArgument = updateArgument;
-window.updateLabel = updateLabel;
-window.removeProgramLine = removeProgramLine;
-
-window.onload = init;
