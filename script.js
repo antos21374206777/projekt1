@@ -330,3 +330,184 @@ function animateOutput(i) {
 function executeInstruction(line) {
 
   animateCPU(); // ANIMACJA
+    const instr = line.instruction.toUpperCase().trim();
+  const arg = line.argument.trim();
+
+  document.getElementById('instr').textContent = instr;
+  document.getElementById('arg').textContent = arg || '-';
+
+  switch (instr) {
+
+    case 'LOAD': {
+      const value = resolveValue(arg);
+      setMemory(0, value);
+      pc++;
+      break;
+    }
+
+    case 'STORE': {
+      const addr = resolveAddress(arg);
+      setMemory(addr, getMemory(0));
+      pc++;
+      break;
+    }
+
+    case 'ADD': {
+      const value = resolveValue(arg);
+      setMemory(0, getMemory(0) + value);
+      pc++;
+      break;
+    }
+
+    case 'SUB': {
+      const value = resolveValue(arg);
+      setMemory(0, getMemory(0) - value);
+      pc++;
+      break;
+    }
+
+    case 'MULT': {
+      const value = resolveValue(arg);
+      setMemory(0, getMemory(0) * value);
+      pc++;
+      break;
+    }
+
+    case 'DIV': {
+      const value = resolveValue(arg);
+
+      if (value === 0) throw new Error('Dzielenie przez zero');
+
+      setMemory(0, Math.floor(getMemory(0) / value));
+      pc++;
+      break;
+    }
+
+    case 'READ': {
+
+      if (inputHead >= inputTape.length) {
+        throw new Error('Koniec taśmy wejściowej');
+      }
+
+      animateInput(inputHead); // ANIMACJA
+
+      const addr = resolveAddress(arg);
+      setMemory(addr, inputTape[inputHead]);
+
+      inputHead++;
+      pc++;
+      break;
+    }
+
+    case 'WRITE': {
+
+      const value = resolveValue(arg);
+
+      outputTape.push(value);
+
+      if (outputHead < OUTPUT_SIZE) {
+        document.getElementById(`out${outputHead}`).value = value;
+
+        animateOutput(outputHead); // ANIMACJA
+      }
+
+      outputHead++;
+      pc++;
+      break;
+    }
+
+    case 'JUMP': {
+      jumpToLabel(arg);
+      break;
+    }
+
+    case 'JGTZ': {
+      if (getMemory(0) > 0) {
+        jumpToLabel(arg);
+      } else {
+        pc++;
+      }
+      break;
+    }
+
+    case 'JZERO': {
+      if (getMemory(0) === 0) {
+        jumpToLabel(arg);
+      } else {
+        pc++;
+      }
+      break;
+    }
+
+    case 'HALT': {
+      running = false;
+      pc = program.length;
+      break;
+    }
+
+    default:
+      throw new Error(`Nieznana instrukcja: ${instr}`);
+  }
+}
+
+function jumpToLabel(label) {
+  if (labelMap[label] === undefined) {
+    throw new Error(`Nie znaleziono etykiety: ${label}`);
+  }
+
+  pc = labelMap[label];
+}
+
+function step() {
+  if (pc >= program.length) {
+    running = false;
+    return false;
+  }
+
+  const line = program[pc];
+
+  highlightLine(pc);
+
+  executeInstruction(line);
+
+  return true;
+}
+
+function stepButton() {
+  try {
+    step();
+  } catch (error) {
+    running = false;
+    alert(error.message);
+  }
+}
+
+async function run() {
+  running = true;
+
+  try {
+    while (running && pc < program.length) {
+      step();
+      await sleep(400);
+    }
+  } catch (error) {
+    running = false;
+    alert(error.message);
+  }
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+window.run = run;
+window.stepButton = stepButton;
+window.reset = reset;
+
+window.addProgramLine = addProgramLine;
+window.updateInstruction = updateInstruction;
+window.updateArgument = updateArgument;
+window.updateLabel = updateLabel;
+window.removeProgramLine = removeProgramLine;
+
+window.onload = init;
