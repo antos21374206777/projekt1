@@ -49,25 +49,19 @@
   <div class="panel">
     <h2>Taśma wejścia</h2>
 
-    <div class="tasma">
+    <div class="tasma-wrapper">
 
-      <div class="indeksy">
-        <span>0</span><span>1</span><span>2</span><span>3</span>
-        <span>4</span><span>5</span><span>6</span><span>7</span>
-      </div>
+  <div class="tasma">
+    <div class="indeksy" id="inputIndexes"></div>
+    <div class="pola" id="inputFields"></div>
+  </div>
 
-      <div class="pola">
-        <input type="number" id="in0" value="0">
-        <input type="number" id="in1" value="0">
-        <input type="number" id="in2" value="0">
-        <input type="number" id="in3" value="0">
-        <input type="number" id="in4" value="0">
-        <input type="number" id="in5" value="0">
-        <input type="number" id="in6" value="0">
-        <input type="number" id="in7" value="0">
-      </div>
+  <div class="tasma-controls">
+    <button onclick="addInput()">+</button>
+    <button onclick="removeInput()">-</button>
+  </div>
 
-    </div>
+</div>
   </div>
   <!-- PROGRAM -->
 <div class="panel full">
@@ -98,29 +92,20 @@
 <div class="panel">
     <h2>Taśma wyjścia</h2>
 
-    <div class="tasma">
+    <div class="tasma-wrapper">
 
-      <div class="indeksy">
-        <span>0</span><span>1</span><span>2</span><span>3</span>
-        <span>4</span><span>5</span><span>6</span><span>7</span>
-        <span>8</span><span>9</span>
-      </div>
-
-      <div class="pola">
-        <input type="number" id="out0" readonly>
-        <input type="number" id="out1" readonly>
-        <input type="number" id="out2" readonly>
-        <input type="number" id="out3" readonly>
-        <input type="number" id="out4" readonly>
-        <input type="number" id="out5" readonly>
-        <input type="number" id="out6" readonly>
-        <input type="number" id="out7" readonly>
-        <input type="number" id="out8" readonly>
-        <input type="number" id="out9" readonly>
-      </div>
-
-    </div>
+  <div class="tasma">
+    <div class="indeksy" id="outputIndexes"></div>
+    <div class="pola" id="outputFields"></div>
   </div>
+
+  <div class="tasma-controls">
+    <button onclick="addOutput()">+</button>
+    <button onclick="removeOutput()">-</button>
+  </div>
+
+  </div>
+</div>
 
 <script src="script.js"></script>
 
