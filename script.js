@@ -246,3 +246,48 @@ function updateMemoryCell(address) {
     cell.classList.add('acc');
   }
 }
+
+function getMemory(address) {
+  if (memory[address] === undefined) {
+    throw new Error(`Pamięć ${address} jest niezdefiniowana`);
+  }
+
+  return memory[address];
+}
+
+function setMemory(address, value) {
+  memory[address] = value;
+  updateMemoryCell(address);
+}
+
+function resolveValue(argument) {
+  argument = argument.trim();
+
+  // =x
+  if (argument.startsWith('=')) {
+    return parseInt(argument.substring(1));
+  }
+
+  // ^x
+  if (argument.startsWith('^')) {
+    const addr = parseInt(argument.substring(1));
+    const indirect = getMemory(addr);
+
+    return getMemory(indirect);
+  }
+
+  // x
+  const addr = parseInt(argument);
+  return getMemory(addr);
+}
+
+function resolveAddress(argument) {
+  argument = argument.trim();
+
+  if (argument.startsWith('^')) {
+    const addr = parseInt(argument.substring(1));
+    return getMemory(addr);
+  }
+
+  return parseInt(argument);
+}
