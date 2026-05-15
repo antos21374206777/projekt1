@@ -141,7 +141,7 @@ function addProgramLine() {
   program.push({
     label: '',
     instruction: 'LOAD',
-    argument: '=0'
+    argument: '0'
   });
 
   buildLabelMap();
