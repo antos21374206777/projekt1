@@ -245,6 +245,12 @@ function getMemory(address) {
     throw new Error(`Pamięć ${address} jest niezdefiniowana`);
   }
 
+
+function getMemory(address) {
+  if (memory[address] === undefined) {
+    throw new Error(`Pamięć ${address} jest niezdefiniowana`);
+  }
+
   return memory[address];
 }
 
@@ -284,6 +290,7 @@ function resolveAddress(argument) {
 
   return parseInt(argument);
 }
+
 function highlightLine(index) {
   document.querySelectorAll('#programBody tr').forEach(row => {
     row.classList.remove('active-line');
