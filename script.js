@@ -267,3 +267,66 @@ function resolveAddress(argument) {
 
   return parseInt(argument);
 }
+function highlightLine(index) {
+  document.querySelectorAll('#programBody tr').forEach(row => {
+    row.classList.remove('active-line');
+  });
+
+  const row = document.getElementById(`line-${index}`);
+
+  if (row) {
+    row.classList.add('active-line');
+  }
+}
+
+/* =========================
+   ANIMACJE (ONLY ADD)
+========================= */
+
+function animateMemory(address) {
+  const cell = document.getElementById(`mem-${address}`);
+  if (!cell) return;
+
+  cell.animate([
+    { transform: 'scale(1)', backgroundColor: '#fff176' },
+    { transform: 'scale(1.15)', backgroundColor: '#ffd54f' },
+    { transform: 'scale(1)', backgroundColor: '#fff' }
+  ], { duration: 450 });
+}
+
+function animateCPU() {
+  const cpu = document.querySelector('.cpu-box');
+  if (!cpu) return;
+
+  cpu.animate([
+    { boxShadow: '0 0 0px #42a5f5' },
+    { boxShadow: '0 0 25px #42a5f5' },
+    { boxShadow: '0 0 0px #42a5f5' }
+  ], { duration: 400 });
+}
+
+function animateInput(i) {
+  const el = document.getElementById(`in${i}`);
+  if (!el) return;
+
+  el.animate([
+    { transform: 'scale(1)', backgroundColor: '#81d4fa' },
+    { transform: 'scale(1.2)', backgroundColor: '#29b6f6' },
+    { transform: 'scale(1)', backgroundColor: '#fff' }
+  ], { duration: 450 });
+}
+
+function animateOutput(i) {
+  const el = document.getElementById(`out${i}`);
+  if (!el) return;
+
+  el.animate([
+    { transform: 'scale(1)', backgroundColor: '#a5d6a7' },
+    { transform: 'scale(1.2)', backgroundColor: '#66bb6a' },
+    { transform: 'scale(1)', backgroundColor: '#fff' }
+  ], { duration: 500 });
+}
+
+function executeInstruction(line) {
+
+  animateCPU(); // ANIMACJA
