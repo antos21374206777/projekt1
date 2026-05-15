@@ -17,16 +17,19 @@ h1 {
   font-size: 26px;
 }
 
+/* GRID */
+
 .grid {
   display: grid;
-  grid-template-columns: 260px 1fr;
+  grid-template-columns: 260px 320px 1fr;
   grid-template-areas:
-    "cpu right"
-    "memory right"
-    "output output";
+    "cpu input input"
+    "memory program program";
   gap: 15px;
   align-items: start;
 }
+
+/* PANELE */
 
 .panel {
   background-color: #d8f2f5;
@@ -36,8 +39,31 @@ h1 {
   box-shadow: inset 0 0 2px #ffffff;
 }
 
-.cpu-box {
+/* USTAWIENIE PANELI */
+
+.panel:nth-child(1) {
   grid-area: cpu;
+}
+
+.panel:nth-child(2) {
+  grid-area: memory;
+}
+
+.panel:nth-child(3) {
+  grid-area: input;
+}
+
+.full {
+  grid-area: program;
+  background-color: #d8f2f5;
+  border: 2px solid #5b9db5;
+  padding: 15px;
+  width: 100%;
+}
+
+/* CPU */
+
+.cpu-box {
   background-color: #f4f0c2;
   border: 2px solid #5b9db5;
   padding: 12px;
@@ -60,50 +86,55 @@ h1 {
   padding: 4px;
 }
 
-.panel:nth-child(2) {
-  grid-area: memory;
-}
+/* TAŚMY */
 
 #wejscie,
 #wyjscie {
-    border: 2px solid #5b9db5;
-    border-radius: 4px;
-    margin: 10px;
-    padding: 20px;
+  border: 2px solid #5b9db5;
+  border-radius: 4px;
+  margin: 10px;
+  padding: 20px;
 }
 
 #wejscie {
-    margin-bottom: 30px;
+  margin-bottom: 30px;
 }
 
 #wyjscie {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 
 .tasma {
-    display: inline-block;
+  display: inline-block;
 }
 
 .indeksy {
-    display: flex;
-    gap: 6px; 
-    margin-bottom: 5px;
-    margin-top: 5px;
+  display: flex;
+  gap: 6px;
+  margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 .indeksy span {
-    width: 170px;   
-    text-align: center;
-    display: inline-block;
+  width: 55px;
+  text-align: center;
+  display: inline-block;
 }
 
-.full {
-  grid-area: output;
-  background-color: #d8f2f5;
-  border: 2px solid #5b9db5;
-  padding: 15px;
-  width: 60%;
+.pola {
+  display: flex;
+  gap: 6px;
 }
+
+.pola input {
+  width: 55px;
+  height: 35px;
+  text-align: center;
+  border: 1px solid #888;
+  background-color: white;
+}
+
+/* TABELA */
 
 table {
   width: 100%;
@@ -129,10 +160,14 @@ td[contenteditable="true"] {
   background-color: #f8f8f8;
 }
 
+/* AKUMULATOR */
+
 .acc {
   background-color: #fff3a1;
   font-weight: bold;
 }
+
+/* PRZYCISKI */
 
 .controls {
   margin-top: 20px;
@@ -161,6 +196,8 @@ button:hover {
   background-color: #8fc46e;
 }
 
+/* TAŚMA WYJŚCIA */
+
 .tape-table {
   margin-top: 10px;
 }
@@ -185,6 +222,8 @@ button:hover {
   background-color: #fffde8;
   border: 1px solid #999;
 }
+
+/* AKTYWNA LINIA */
 
 .active-line {
   background-color: #cfe8ff !important;
